@@ -42,6 +42,11 @@ public class CongesController {
 		return new ResponseEntity<Conges>(conge1,HttpStatus.CREATED);
 	}
 	
+	@GetMapping("/all")
+	public Iterable<Conges> getAllConges(){
+		return congesService.findAllConges();
+	}
+	
 	@GetMapping("/{RelatCongesType_id}")
 	public Iterable<Conges> getConges(@PathVariable String RelatCongesType_id){
 		return congesService.findRelatCongeTypeById(RelatCongesType_id);

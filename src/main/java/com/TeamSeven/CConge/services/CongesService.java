@@ -1,6 +1,5 @@
 package com.TeamSeven.CConge.services;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +26,13 @@ public class CongesService {
 	private TA_CongesRepository ta_CongesRepository;
 	@Autowired
 	private UserRepository userRepository;
+	
+	
+	
+	public Iterable<Conges> findAllConges(){
+		return congesRepository.findAll();
+	}
+	
 	
 	
 	public Conges addConges(String TACongeCode, Conges conge, String username) {
