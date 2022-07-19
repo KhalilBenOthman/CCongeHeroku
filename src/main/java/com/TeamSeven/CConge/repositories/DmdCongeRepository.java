@@ -10,6 +10,5 @@ public interface DmdCongeRepository extends CrudRepository<DmdConge, Long>{
 		DmdConge findBydateDebutC(Date dateDeb);
 		DmdConge findByid(Long id);
 
-
 		Iterable<DmdConge> findAllByusername(String username);
 }

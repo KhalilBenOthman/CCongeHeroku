@@ -55,6 +55,9 @@ public class User implements UserDetails{
 	@Transient
 	private String confirmPassword;
 	
+	private int solde;
+	private int soldeRestant;
+	
 	private Date create_At;
 	private Date update_At;
 	
@@ -131,6 +134,18 @@ public class User implements UserDetails{
 	}
 	
 	
+	public int getSolde() {
+		return solde;
+	}
+	public void setSolde(int solde) {
+		this.solde = solde;
+	}
+	public int getSoldeRestant() {
+		return soldeRestant;
+	}
+	public void setSoldeRestant(int soldeRestant) {
+		this.soldeRestant = soldeRestant;
+	}
 	public UserDmdConges getUserDmdConges() {
 		return userDmdConges;
 	}

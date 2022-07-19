@@ -12,7 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -21,10 +23,16 @@ public class DmdConge {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(updatable = false, unique = true)
+	//@NotEmpty(message = "date de début est obligatoire.")
+	@JsonFormat(pattern = "yyyy-mm-dd")
 	private Date dateDebutC;
+	//@NotEmpty(message = "date de fin est obligatoire.")
+	@JsonFormat(pattern = "yyyy-mm-dd")
 	private Date dateFinC;
 	@NotBlank(message = "code de congée est obligatoire.")
 	private String congesCode;
+	
+	private int periodeOnJours;
 	
 	private String username;
 	
@@ -96,6 +104,14 @@ public class DmdConge {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public int getPeriodeOnJours() {
+		return periodeOnJours;
+	}
+
+	public void setPeriodeOnJours(int periodeOnJours) {
+		this.periodeOnJours = periodeOnJours;
 	}
 
 	
