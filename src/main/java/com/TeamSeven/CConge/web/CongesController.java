@@ -1,5 +1,7 @@
 package com.TeamSeven.CConge.web;
 
+import java.security.Principal;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +34,11 @@ public class CongesController {
 	
 	@PostMapping("/{RelatCongesType_id}")
 	public ResponseEntity<?> addCongesToRelatCongeType (@Valid @RequestBody Conges conge,
-														BindingResult result, @PathVariable String RelatCongesType_id)	{															
+														BindingResult result, @PathVariable String RelatCongesType_id,Principal principal)	{															
 		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationError(result);
 		if (errorMap != null) return errorMap;
 		
-		Conges conge1 = congesService.addConges(RelatCongesType_id, conge);
+		Conges conge1 = congesService.addConges(RelatCongesType_id, conge,principal.getName());
 		return new ResponseEntity<Conges>(conge1,HttpStatus.CREATED);
 	}
 	

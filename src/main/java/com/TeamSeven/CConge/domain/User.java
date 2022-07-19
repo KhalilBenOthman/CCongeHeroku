@@ -3,11 +3,14 @@ package com.TeamSeven.CConge.domain;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -15,12 +18,14 @@ import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.annotations.Proxy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "users")
+@Proxy(lazy = false)
 public class User implements UserDetails{
 
 
@@ -54,6 +59,9 @@ public class User implements UserDetails{
 	private Date update_At;
 	
 	//OneToMany With CongeDemande
+	@OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "userDmd")
+	private UserDmdConges userDmdConges;
+	
 	
 	//OneToMany With CongeValid
 	
@@ -123,6 +131,12 @@ public class User implements UserDetails{
 	}
 	
 	
+	public UserDmdConges getUserDmdConges() {
+		return userDmdConges;
+	}
+	public void setUserDmdConges(UserDmdConges userDmdConges) {
+		this.userDmdConges = userDmdConges;
+	}
 	@JsonIgnore
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

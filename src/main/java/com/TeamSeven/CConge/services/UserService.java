@@ -5,14 +5,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.TeamSeven.CConge.domain.User;
+import com.TeamSeven.CConge.domain.UserDmdConges;
 import com.TeamSeven.CConge.exceptions.UsernameExistException;
+import com.TeamSeven.CConge.repositories.UserDmdCongesRepository;
 import com.TeamSeven.CConge.repositories.UserRepository;
 
 @Service
 public class UserService {
 	@Autowired
 	private UserRepository userRepository;
-	
+	@Autowired
+	private UserDmdCongesRepository userDmdCongesRepository;
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
@@ -21,6 +24,16 @@ public class UserService {
 	public User saveUser(User newUser) {
 		
 		try {
+			//SetUp BackLog des demandes 
+			UserDmdConges userDmdConges = userDmdCongesRepository.findByuserName(newUser.getUsername());
+			if(userDmdConges == null) {
+				UserDmdConges userDmdConges1 = new UserDmdConges();
+				newUser.setUserDmdConges(userDmdConges1);
+				userDmdConges1.setUserDmd(newUser);
+				userDmdConges1.setUserName(newUser.getUsername());
+			}
+			
+			
 			newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));	
 			newUser.setConfirmPassword(null);
 			return userRepository.save(newUser);

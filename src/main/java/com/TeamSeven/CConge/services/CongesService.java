@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 import com.TeamSeven.CConge.domain.Conges;
 import com.TeamSeven.CConge.domain.RelatCongeType;
 import com.TeamSeven.CConge.domain.TA_Conges;
+import com.TeamSeven.CConge.domain.User;
 import com.TeamSeven.CConge.exceptions.TA_CongesCodeException;
 import com.TeamSeven.CConge.exceptions.TA_CongesNotFoundException;
 import com.TeamSeven.CConge.repositories.CongesRepository;
 import com.TeamSeven.CConge.repositories.RelatCongeTypeRepository;
 import com.TeamSeven.CConge.repositories.TA_CongesRepository;
+import com.TeamSeven.CConge.repositories.UserRepository;
 
 @Service
 public class CongesService {
@@ -23,20 +25,27 @@ public class CongesService {
 	private CongesRepository congesRepository ;
 	@Autowired
 	private TA_CongesRepository ta_CongesRepository;
+	@Autowired
+	private UserRepository userRepository;
 	
 	
-	
-	public Conges addConges(String TACongeCode, Conges conge) {
+	public Conges addConges(String TACongeCode, Conges conge, String username) {
 		
 		try {
-		
+			User user = userRepository.findByUsername(username);
+			if(user.getIsAdmin()==true) {
 			RelatCongeType relatCongeType = relatCongeTypeRepository.findByTACongeCode(TACongeCode);
 			conge.setRelatCongeType(relatCongeType);
 			conge.setTACongeCode(TACongeCode);
 			conge.setCodeSequence(TACongeCode+"-"+conge.getCode());
 			return congesRepository.save(conge);
-		
+			}
+			throw new TA_CongesNotFoundException("404........................");
 		}catch(Exception e){
+			User user = userRepository.findByUsername(username);
+			if (user.getIsAdmin()==false) {
+				throw new TA_CongesCodeException("Seul l'admin peut gérer les types des congés");
+			}
 			throw new TA_CongesNotFoundException("La famille de congés "+TACongeCode+" n'existe pas.");
 		}
 	}
